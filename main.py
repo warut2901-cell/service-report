@@ -82,7 +82,7 @@ def save():
 
         <table>
             <tr><td style="text-align: center; background-color: #f9f9f9;"><strong>รายละเอียดการให้บริการหรือซ่อม/ Description of Service or Repair</strong></td></tr>
-            <tr><td height="480">{get_val('description').replace(chr(10), '<br>')}</td></tr>
+            <tr><td height="680">{get_val('description').replace(chr(10), '<br>')}</td></tr>
         </table>
 
         <table>
