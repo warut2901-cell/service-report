@@ -2,12 +2,13 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ใบรายการซ่อมเครื่อง - Service Report</title>
     <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
     <style>
-        body { font-family: Tahoma, sans-serif; font-size: 13px; margin: 20px; background-color: #f4f4f4; }
-        .paper { background-color: white; padding: 20px; max-width: 900px; margin: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        table { width: 100%; border-collapse: collapse; margin-bottom: -1px; }
+        body { font-family: Tahoma, sans-serif; font-size: 13px; margin: 10px; background-color: #f4f4f4; }
+        .paper { background-color: white; padding: 15px; max-width: 900px; margin: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: -1px; min-width: 600px; }
         th, td { border: 1px solid #000; padding: 5px; vertical-align: top; }
         input[type="text"] { border: none; border-bottom: 1px dotted #000; width: 70%; font-family: Tahoma; font-size: 13px; outline: none; background: transparent; }
         textarea { width: 100%; border: none; font-family: Tahoma; font-size: 13px; outline: none; resize: none; background: transparent; }
@@ -15,7 +16,7 @@
         .header-text { text-align: center; font-size: 16px; font-weight: bold; margin: 5px 0; }
         .btn-submit { background-color: #28a745; color: white; padding: 15px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 18px; margin-top: 20px; width: 100%; font-weight: bold; }
         .btn-clear { background-color: #6c757d; color: white; padding: 5px 10px; border: none; border-radius: 3px; cursor: pointer; font-size: 11px; margin-top: 5px; }
-        canvas { border: 1px solid #ccc; background-color: #fafafa; margin-top: 10px; border-radius: 4px; }
+        canvas { border: 1px solid #ccc; background-color: #fafafa; margin-top: 10px; border-radius: 4px; max-width: 100%; }
     </style>
 </head>
 <body>
@@ -97,21 +98,21 @@
                 <tr><td colspan="2">รายชื่อช่างที่ให้บริการ/ Service name: <input type="text" name="service_names" style="width: 80%;"></td></tr>
                 <tr>
                     <td width="50%" style="text-align: center; padding: 15px;">
-                        <strong>เซ็นชื่อลูกค้า / Customer Signature</strong><br>
-                        <canvas id="sigCanvasCustomer" width="350" height="120"></canvas><br>
-                        <button type="button" class="btn-clear" onclick="padCustomer.clear()">ล้างลายเซ็นลูกค้า</button>
+                        <strong>เซ็นชื่อลูกค้า / Customer</strong><br>
+                        <canvas id="sigCanvasCustomer" width="300" height="120"></canvas><br>
+                        <button type="button" class="btn-clear" onclick="padCustomer.clear()">ล้างลายเซ็น</button>
                         <input type="hidden" name="signature_customer" id="sigDataCustomer">
                     </td>
                     <td width="50%" style="text-align: center; padding: 15px;">
-                        <strong>เซ็นชื่อหัวหน้าช่าง / Chief Engineer Signature</strong><br>
-                        <canvas id="sigCanvasChief" width="350" height="120"></canvas><br>
-                        <button type="button" class="btn-clear" onclick="padChief.clear()">ล้างลายเซ็นหัวหน้าช่าง</button>
+                        <strong>เซ็นชื่อหัวหน้าช่าง / Chief Engineer</strong><br>
+                        <canvas id="sigCanvasChief" width="300" height="120"></canvas><br>
+                        <button type="button" class="btn-clear" onclick="padChief.clear()">ล้างลายเซ็น</button>
                         <input type="hidden" name="signature_chief" id="sigDataChief">
                     </td>
                 </tr>
                 <tr>
                     <td colspan="2" style="text-align: center; font-size: 11px;">
-                        ติดต่อสอบถาม หรือมีข้อสงสัย ติดต่อด่วนได้ที่ 02-159-6391-3 , 0-89-896-9270 หรือ ukoset@ksc.th.com, siameimatechgroup@yahoo.com<br>www.siameimatechgroup.com
+                        ติดต่อสอบถาม หรือมีข้อสงสัย ติดต่อด่วนได้ที่ 02-159-6391-3 , 0-89-896-9270 หรือ ukoset@ksc.th.com<br>www.siameimatechgroup.com
                     </td>
                 </tr>
             </table>
@@ -124,13 +125,11 @@
         const padCustomer = new SignaturePad(document.getElementById('sigCanvasCustomer'));
         const padChief = new SignaturePad(document.getElementById('sigCanvasChief'));
 
-        // โค้ดสำหรับใส่วันที่ปัจจุบันอัตโนมัติ
         window.onload = function() {
             const today = new Date();
             const dd = String(today.getDate()).padStart(2, '0');
             const mm = String(today.getMonth() + 1).padStart(2, '0');
             const yyyy = today.getFullYear();
-            // จัดรูปแบบเป็น วัน/เดือน/ปี
             document.getElementById('currentDate').value = dd + '/' + mm + '/' + yyyy;
         };
 

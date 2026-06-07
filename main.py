@@ -82,12 +82,12 @@ def save():
 
         <table>
             <tr><td style="text-align: center; background-color: #f9f9f9;"><strong>รายละเอียดการให้บริการหรือซ่อม/ Description of Service or Repair</strong></td></tr>
-            <tr><td height="180">{get_val('description').replace(chr(10), '<br>')}</td></tr>
+            <tr><td height="480">{get_val('description').replace(chr(10), '<br>')}</td></tr>
         </table>
 
         <table>
             <tr>
-                <td width="30%">ความคิดเห็นจากช่าง/ Recommend:<br>{get_val('recommend').replace(chr(10), '<br>')}</td>
+                <td width="30%" height="120">ความคิดเห็นจากช่าง/ Recommend:<br>{get_val('recommend').replace(chr(10), '<br>')}</td>
                 <td width="40%">รายการอะไหล่/ Spare parts used:<br>{get_val('spare_parts').replace(chr(10), '<br>')}</td>
                 <td width="30%">
                     เริ่มงาน: {get_val('start_time')} เสร็จ: {get_val('finish_time')}<br>
