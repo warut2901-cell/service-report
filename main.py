@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, make_response
 import pdfkit
+import base64
+import os
 
 app = Flask(__name__)
 
@@ -20,6 +22,13 @@ def save():
     stat_done = "[ X ]" if get_val('status') == "งานเสร็จ/ Completed" else "[&nbsp;&nbsp;&nbsp;]"
     stat_notdone = "[ X ]" if get_val('status') == "งานยังไม่เสร็จ/ Not completed yet" else "[&nbsp;&nbsp;&nbsp;]"
 
+    # แปลงรูปโลโก้ไปฝังใน PDF ป้องกันเซิร์ฟเวอร์หาไฟล์ไม่เจอ
+    logo_path = os.path.join('static', 'logo.png')
+    logo_b64 = ""
+    if os.path.exists(logo_path):
+        with open(logo_path, "rb") as f:
+            logo_b64 = "data:image/png;base64," + base64.b64encode(f.read()).decode('utf-8')
+
     html_content = f"""
     <html>
     <head>
@@ -37,9 +46,7 @@ def save():
         <table>
             <tr>
                 <td width="25%">
-                    <h2 style="color: #a00; margin: 0;">Siam</h2>
-                    <h3 style="background-color: #555; color: white; display: inline-block; padding: 2px; margin: 0;">eimatech</h3>
-                    <br><br>
+                    <img src="{logo_b64}" style="max-width: 160px; max-height: 60px; margin-bottom: 10px;" alt="Logo"><br>
                     เล่มที่ / Book No. <span class="red-text">{get_val('book_no')}</span>
                 </td>
                 <td width="50%">
@@ -82,7 +89,7 @@ def save():
 
         <table>
             <tr><td style="text-align: center; background-color: #f9f9f9;"><strong>รายละเอียดการให้บริการหรือซ่อม/ Description of Service or Repair</strong></td></tr>
-            <tr><td height="680">{get_val('description').replace(chr(10), '<br>')}</td></tr>
+            <tr><td height="780">{get_val('description').replace(chr(10), '<br>')}</td></tr>
         </table>
 
         <table>
