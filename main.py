@@ -17,10 +17,10 @@ def save():
     sig_customer = get_val('signature_customer')
     sig_chief = get_val('signature_chief')
 
-    war_during = "[ X ]" if get_val('warranty') == "อยู่ในช่วงรับประกัน (During)" else "[&nbsp;&nbsp;&nbsp;]"
-    war_notin = "[ X ]" if get_val('warranty') == "ไม่อยู่ในช่วงรับประกัน (Not in)" else "[&nbsp;&nbsp;&nbsp;]"
-    stat_done = "[ X ]" if get_val('status') == "งานเสร็จ/ Completed" else "[&nbsp;&nbsp;&nbsp;]"
-    stat_notdone = "[ X ]" if get_val('status') == "งานยังไม่เสร็จ/ Not completed yet" else "[&nbsp;&nbsp;&nbsp;]"
+    war_during = "[ &#10004; ]" if get_val('warranty') == "อยู่ในช่วงรับประกัน (During)" else "[&nbsp;&nbsp;&nbsp;]"
+    war_notin = "[ &#10004; ]" if get_val('warranty') == "ไม่อยู่ในช่วงรับประกัน (Not in)" else "[&nbsp;&nbsp;&nbsp;]"
+    stat_done = "[ &#10004; ]" if get_val('status') == "งานเสร็จ/ Completed" else "[&nbsp;&nbsp;&nbsp;]"
+    stat_notdone = "[ &#10004; ]" if get_val('status') == "งานยังไม่เสร็จ/ Not completed yet" else "[&nbsp;&nbsp;&nbsp;]"
 
     # แปลงรูปโลโก้ไปฝังใน PDF ป้องกันเซิร์ฟเวอร์หาไฟล์ไม่เจอ
     logo_path = os.path.join('static', 'logo.png')
