@@ -132,7 +132,7 @@ def save():
     pdf = pdfkit.from_string(html_content, False, options=options)
     response = make_response(pdf)
     response.headers['Content-Type'] = 'application/pdf'
-    response.headers['Content-Disposition'] = 'inline; filename=service_report.pdf'
+    response.headers['Content-Disposition'] = 'attachment; filename=service_report.pdf'
     
     return response
 
