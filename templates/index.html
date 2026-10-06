@@ -344,34 +344,79 @@
         const padCustomer = new SignaturePad(document.getElementById('sigCanvasCustomer'));
         const padChief = new SignaturePad(document.getElementById('sigCanvasChief'));
 
-       window.onload = function() {
-    const today = new Date();
-    const dd = String(today.getDate()).padStart(2, '0');
-    const mm = String(today.getMonth() + 1).padStart(2, '0');
-    const yyyy = today.getFullYear();
-    document.getElementById('currentDate').value = dd + '/' + mm + '/' + yyyy;
+      window.onload = function() {
+        const today = new Date();
+        const dd = String(today.getDate()).padStart(2, '0');
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const yyyy = today.getFullYear();
+        document.getElementById('currentDate').value = dd + '/' + mm + '/' + yyyy;
 
-    // ระบบรันเลข SR อัตโนมัติ
-    let lastSrNo = localStorage.getItem('sr_no_count');
-    if (!lastSrNo) {
-        lastSrNo = 1;
-    } else {
-        lastSrNo = parseInt(lastSrNo) + 1;
-    }
-    localStorage.setItem('sr_no_count', lastSrNo);
-    
-    // เติมเลข 0 ให้ครบ 5 หลัก (เช่น 00001, 00002) ไปใส่ในช่อง srNo
-    document.getElementById('srNo').value = String(lastSrNo).padStart(5, '0');
-};
-        function submitForm() {
-            if(padCustomer.isEmpty() || padChief.isEmpty()) {
-                alert("ต้องให้ลูกค้าและหัวหน้าช่างเซ็นชื่อทั้งสองช่องนะเพื่อน!");
-                return;
-            }
-            document.getElementById('sigDataCustomer').value = padCustomer.toDataURL();
-            document.getElementById('sigDataChief').value = padChief.toDataURL();
-            document.getElementById('repairForm').submit();
+        // ระบบรันเลข SR อัตโนมัติ
+        let lastSrNo = localStorage.getItem('sr_no_count');
+        if (!lastSrNo) {
+            lastSrNo = 1;
+        } else {
+            lastSrNo = parseInt(lastSrNo) + 1;
         }
+        localStorage.setItem('sr_no_count', lastSrNo);
+        document.getElementById('srNo').value = String(lastSrNo).padStart(5, '0');
+
+        // โหลดตัวเลือกใหม่ที่เคยพิมพ์ไว้ขึ้นมาแสดง
+        loadCustomOptions('machineList', 'custom_machines');
+        loadCustomOptions('brandList', 'custom_brands');
+        loadCustomOptions('modelList', 'custom_models');
+    };
+
+    // ฟังก์ชันดึงความจำมาใส่ใน Dropdown
+    function loadCustomOptions(listId, storageKey) {
+        let savedItems = JSON.parse(localStorage.getItem(storageKey)) || [];
+        const datalist = document.getElementById(listId);
+        savedItems.forEach(item => {
+            if (!Array.from(datalist.options).some(opt => opt.value === item)) {
+                const option = document.createElement('option');
+                option.value = item;
+                option.textContent = item;
+                datalist.appendChild(option);
+            }
+        });
+    }
+
+    // ฟังก์ชันจำชื่อใหม่ตอนกดเซฟ
+    function saveCustomOptions() {
+        saveOption('machine', 'machineList', 'custom_machines');
+        saveOption('brand', 'brandList', 'custom_brands');
+        saveOption('model', 'modelList', 'custom_models');
+    }
+
+    function saveOption(inputName, listId, storageKey) {
+        const inputVal = document.querySelector(`input[name="${inputName}"]`).value.trim();
+        if (!inputVal) return;
+
+        const datalist = document.getElementById(listId);
+        const exists = Array.from(datalist.options).some(opt => opt.value === inputVal);
+        
+        if (!exists) {
+            let savedItems = JSON.parse(localStorage.getItem(storageKey)) || [];
+            if (!savedItems.includes(inputVal)) {
+                savedItems.push(inputVal);
+                localStorage.setItem(storageKey, JSON.stringify(savedItems));
+            }
+        }
+    }
+
+    function submitForm() {
+        if(padCustomer.isEmpty() || padChief.isEmpty()) {
+            alert("ต้องให้ลูกค้าและหัวหน้าช่างเซ็นชื่อทั้งสองช่องนะเพื่อน!");
+            return;
+        }
+        
+        // ให้จำตัวเลือกใหม่ลงเครื่องก่อนส่งข้อมูล
+        saveCustomOptions();
+
+        document.getElementById('sigDataCustomer').value = padCustomer.toDataURL();
+        document.getElementById('sigDataChief').value = padChief.toDataURL();
+        document.getElementById('repairForm').submit();
+    }
     </script>
 </body>
 </html>
