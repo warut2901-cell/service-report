@@ -79,10 +79,14 @@ def save():
                     {war_during} อยู่ในช่วงรับประกัน (During)<br>
                     {war_notin} ไม่อยู่ในช่วงรับประกัน (Not in)
                 </td>
-                <td width="35%">
-                    อาการเสียเบื้องต้น / Breaking Down:<br>
-                    {get_val('breakdown').replace(chr(10), '<br>')}
-                </td>
+               <td width="35%">
+    อาการเสียเบื้องต้น / Breaking Down:<br>
+    {get_val('breakdown').replace(chr(10), '<br>')}
+    <br><br>
+    <hr style="border: 0.5px solid #000; margin: 5px 0;">
+    อาการเสียเมื่อช่างไปถึง / Actual Breaking Down:<br>
+    {get_val('breakdown_actual').replace(chr(10), '<br>')}
+</td>
             </tr>
         </table>
 
