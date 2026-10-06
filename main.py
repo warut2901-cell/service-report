@@ -46,17 +46,16 @@ def save():
         <table>
             <tr>
                 <td width="25%">
-                    <img src="{logo_b64}" style="max-width: 160px; max-height: 60px; margin-bottom: 10px;" alt="Logo"><br>
-                    เล่มที่ / Book No. <span class="red-text">{get_val('book_no')}</span>
+                   <img src="ใส่ลิงก์โลโก้เดิมที่โค้ดนายมี" style="width: 250px; height: auto; display: block; margin: 0 auto;" alt="Logo">
                 </td>
                 <td width="50%">
                     <p class="header-text">ใบรายการซ่อมเครื่อง</p>
                     <p class="header-text">Service Report</p>
                     ชื่อลูกค้า / Customer: {get_val('customer')}<br><br>
-                    ชื่อเซลล์ / seller: {get_val('seller')}
+                    ซื้อจาก / seller: {get_val('seller')}
                 </td>
                 <td width="25%" style="font-size: 14px; line-height: 1.4;">
-                    ukoset@ksc.th.com<br>Tel : 02-159-6391-3<br>
+                    ukofset@ksc.th.com<br>Tel : 02-159-6391-3<br>
                     <hr style="border: 0.5px solid #000; margin: 5px 0;">
                     วันที่ / Date: {get_val('date')}<br>
                     เข้าซ่อมครั้งที่/service time(s): {get_val('service_times')}<br>
