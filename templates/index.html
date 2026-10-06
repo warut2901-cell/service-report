@@ -482,7 +482,7 @@
         // ลองสั่งก๊อปปี้อัตโนมัติก่อน ถ้ามือถือยอม
         if (navigator.clipboard && window.isSecureContext) {
             navigator.clipboard.writeText(shareUrl).then(() => {
-                alert("🔗 ก๊อปลิงก์ให้แล้วเพื่อน! เอาไปแปะในแชท LINE ได้เลย\n\n(ถ้าก๊อปไม่ติด ลิงก์คือ:\n" + shareUrl + ")");
+                alert("🔗 ก๊อปลิงก์แล้ว\n\n(ถ้าก๊อปไม่ติด ลิงก์คือ:\n" + shareUrl + ")");
             }).catch(err => {
                 prompt("มือถือบล็อกการก๊อปออโต้เพื่อน ให้ก๊อปลิงก์ในช่องข้างล่างนี้ไปแทนนะ:", shareUrl);
             });
