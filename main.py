@@ -22,12 +22,28 @@ def save():
     stat_done = "[ &#10004; ]" if get_val('status') == "งานเสร็จ/ Completed" else "[&nbsp;&nbsp;&nbsp;]"
     stat_notdone = "[ &#10004; ]" if get_val('status') == "งานยังไม่เสร็จ/ Not completed yet" else "[&nbsp;&nbsp;&nbsp;]"
 
-    # แปลงรูปโลโก้ไปฝังใน PDF ป้องกันเซิร์ฟเวอร์หาไฟล์ไม่เจอ
+    # แปลงรูปโลโก้
     logo_path = os.path.join('static', 'logo.png')
     logo_b64 = ""
     if os.path.exists(logo_path):
         with open(logo_path, "rb") as f:
             logo_b64 = "data:image/png;base64," + base64.b64encode(f.read()).decode('utf-8')
+
+    # ระบบจัดการรูปถ่าย (ก่อนซ่อม / หลังซ่อม)
+    pic_before = request.files.get('pic_before')
+    pic_after = request.files.get('pic_after')
+
+    def get_img_b64(file_obj):
+        if file_obj and file_obj.filename != '':
+            # อ่านไฟล์รูปแล้วแปลงเป็น Base64
+            return "data:image/jpeg;base64," + base64.b64encode(file_obj.read()).decode('utf-8')
+        return ""
+
+    b64_before = get_img_b64(pic_before)
+    b64_after = get_img_b64(pic_after)
+
+    img_tag_before = f'<img src="{b64_before}" style="max-width: 100%; max-height: 250px; display: block; margin: 0 auto;">' if b64_before else '<br><br>-- ไม่ได้แนบรูป --'
+    img_tag_after = f'<img src="{b64_after}" style="max-width: 100%; max-height: 250px; display: block; margin: 0 auto;">' if b64_after else '<br><br>-- ไม่ได้แนบรูป --'
 
     html_content = f"""
     <html>
@@ -79,20 +95,32 @@ def save():
                     {war_during} อยู่ในช่วงรับประกัน (During)<br>
                     {war_notin} ไม่อยู่ในช่วงรับประกัน (Not in)
                 </td>
-               <td width="35%">
-    อาการเสียเบื้องต้น / Breaking Down:<br>
-    {get_val('breakdown').replace(chr(10), '<br>')}
-    <br><br>
-    <hr style="border: 0.5px solid #000; margin: 5px 0;">
-    อาการเสียเมื่อช่างไปถึง / Actual Breaking Down:<br>
-    {get_val('breakdown_actual').replace(chr(10), '<br>')}
-</td>
+                <td width="35%">
+                    อาการเสียเบื้องต้น / Breaking Down:<br>
+                    {get_val('breakdown').replace(chr(10), '<br>')}
+                    <br><br>
+                    <hr style="border: 0.5px solid #000; margin: 5px 0;">
+                    อาการเสียเมื่อช่างไปถึง / Actual Breaking Down:<br>
+                    {get_val('breakdown_actual').replace(chr(10), '<br>')}
+                </td>
             </tr>
         </table>
 
         <table>
-            <tr><td style="text-align: center; background-color: #f9f9f9;"><strong>รายละเอียดการให้บริการหรือซ่อม/ Description of Service or Repair</strong></td></tr>
-            <tr><td height="780">{get_val('description').replace(chr(10), '<br>')}</td></tr>
+            <tr><td colspan="2" style="text-align: center; background-color: #f9f9f9;"><strong>รายละเอียดการให้บริการหรือซ่อม/ Description of Service or Repair</strong></td></tr>
+            <tr>
+                <td colspan="2" height="200">{get_val('description').replace(chr(10), '<br>')}</td>
+            </tr>
+            <tr>
+                <td width="50%" height="250" style="text-align: center; vertical-align: middle;">
+                    <strong>รูปก่อนซ่อม (Before)</strong><br><br>
+                    {img_tag_before}
+                </td>
+                <td width="50%" height="250" style="text-align: center; vertical-align: middle;">
+                    <strong>รูปหลังซ่อม (After)</strong><br><br>
+                    {img_tag_after}
+                </td>
+            </tr>
         </table>
 
         <table>
