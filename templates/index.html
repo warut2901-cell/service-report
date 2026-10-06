@@ -350,8 +350,8 @@
                     </td>
                 </tr>
             </table>
-           <button type="button" class="btn-submit" onclick="generateShareLink()" style="background-color: #007bff; margin-bottom: 10px;">🔗 สร้างลิงก์ส่งให้ช่าง (แอดมินกด)</button>
-            <button type="button" class="btn-submit" onclick="submitForm()">💾 บันทึกงานและสร้างใบ PDF (ช่างกด)</button>
+           <button type="button" class="btn-submit" onclick="generateShareLink()" style="background-color: #3B82F6; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 15px; border-radius: 8px;">🔗 สร้างลิงค์</button>
+            <button type="button" class="btn-submit" onclick="submitForm()" style="background-color: #EF4444; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-radius: 8px;">💾 บันทึกเป็น PDF</button>
         </form>
     </div>
 
@@ -480,7 +480,7 @@
         
         if (navigator.clipboard && window.isSecureContext) {
             navigator.clipboard.writeText(shareUrl).then(() => {
-                alert("ก๊อปลิงก์แล้ว"); // << เปลี่ยนคำตรงนี้เรียบร้อย
+                alert("ก๊อปลิงก์แล้ว");
             }).catch(err => {
                 prompt("ก๊อปลิงก์ในช่องข้างล่างนี้:", shareUrl);
             });
