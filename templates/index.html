@@ -465,12 +465,11 @@
     }
 
     // ฟังก์ชันสร้างลิงก์ที่ถูกต้องและแยกออกมาต่างหาก
-    function generateShareLink() {
+   function generateShareLink() {
         const form = document.getElementById('repairForm');
         const formData = new FormData(form);
         const params = new URLSearchParams();
         
-        // กวาดข้อมูลที่กรอกทั้งหมดใส่ URL (ยกเว้นรูปลูกค้ากับลายเซ็น)
         for (const [key, value] of formData.entries()) {
             if (value && key !== 'signature_customer' && key !== 'signature_chief' && !key.startsWith('pic_')) {
                 params.append(key, value);
@@ -479,15 +478,14 @@
         
         const shareUrl = window.location.origin + window.location.pathname + '?' + params.toString();
         
-        // ลองสั่งก๊อปปี้อัตโนมัติก่อน ถ้ามือถือยอม
         if (navigator.clipboard && window.isSecureContext) {
             navigator.clipboard.writeText(shareUrl).then(() => {
-                alert("🔗 ก๊อปลิงก์แล้ว\n\n(ถ้าก๊อปไม่ติด ลิงก์คือ:\n" + shareUrl + ")");
+                alert("ก๊อปลิงก์แล้ว"); // << เปลี่ยนคำตรงนี้เรียบร้อย
             }).catch(err => {
-                prompt("มือถือบล็อกการก๊อปออโต้เพื่อน ให้ก๊อปลิงก์ในช่องข้างล่างนี้ไปแทนนะ:", shareUrl);
+                prompt("ก๊อปลิงก์ในช่องข้างล่างนี้:", shareUrl);
             });
         } else {
-            prompt("ก๊อปลิงก์ในช่องข้างล่างนี้ ไปส่งให้ช่างได้เลยเพื่อน:", shareUrl);
+            prompt("ก๊อปลิงก์ในช่องข้างล่างนี้:", shareUrl);
         }
     }
 
