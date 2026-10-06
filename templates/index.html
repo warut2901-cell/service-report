@@ -316,14 +316,15 @@
                         รายการอะไหล่/ Spare parts used:<br>
                         <textarea name="spare_parts" rows="5"></textarea>
                     </td>
-                    <td width="30%">
-                        เริ่มงาน/ start: <input type="text" name="start_time" style="width: 40px;"> เสร็จงาน/ finish: <input type="text" name="finish_time" style="width: 40px;"><br>
-                        <hr style="border: 0.5px solid #000;">
-                        เวลารวม/ Total time: <input type="text" name="total_time" style="width: 50%;"><br>
-                        <hr style="border: 0.5px solid #000;">
-                        <input type="radio" name="status" value="งานเสร็จ/ Completed"> งานเสร็จ/ Completed<br>
-                        <input type="radio" name="status" value="งานยังไม่เสร็จ/ Not completed yet"> งานยังไม่เสร็จ/ Not completed yet
-                    </td>
+                   <td width="30%">
+    เริ่มงาน/ start: <input type="time" name="start_time" id="startTime" onchange="calculateTime()" style="font-family: Tahoma; font-size: 13px;"> <br>
+    เสร็จงาน/ finish: <input type="time" name="finish_time" id="finishTime" onchange="calculateTime()" style="font-family: Tahoma; font-size: 13px;"><br>
+    <hr style="border: 0.5px solid #000;">
+    เวลารวม/ Total time: <input type="text" name="total_time" id="totalTime" style="width: 60%; background-color: #e9ecef; pointer-events: none;" placeholder="-- คำนวณอัตโนมัติ --"><br>
+    <hr style="border: 0.5px solid #000;">
+    <input type="radio" name="status" value="งานเสร็จ/ Completed"> งานเสร็จ/ Completed<br>
+    <input type="radio" name="status" value="งานยังไม่เสร็จ/ Not completed yet"> งานยังไม่เสร็จ/ Not completed yet
+</td>
                 </tr>
             </table>
 
@@ -417,7 +418,36 @@
             }
         }
     }
-
+function calculateTime() {
+        const start = document.getElementById('startTime').value;
+        const finish = document.getElementById('finishTime').value;
+        
+        if (start && finish) {
+            // เอาเวลามาแปลงเป็นวันที่สมมติเพื่อหาผลต่าง
+            const startTime = new Date(`1970-01-01T${start}:00`);
+            const finishTime = new Date(`1970-01-01T${finish}:00`);
+            
+            let diffMs = finishTime - startTime;
+            
+            // ดักทางเผื่อช่างทำงานข้ามคืน (เช่น เริ่ม 23:00 เสร็จ 02:00)
+            if (diffMs < 0) {
+                diffMs += 24 * 60 * 60 * 1000;
+            }
+            
+            // แปลงมิลลิวินาทีเป็น นาที และ ชั่วโมง
+            const diffMins = Math.floor(diffMs / 60000);
+            const hours = Math.floor(diffMins / 60);
+            const minutes = diffMins % 60;
+            
+            let timeString = "";
+            if (hours > 0) timeString += `${hours} ชั่วโมง `;
+            if (minutes > 0) timeString += `${minutes} นาที`;
+            if (hours === 0 && minutes === 0) timeString = "0 นาที";
+            
+            // โยนข้อความกลับไปใส่ในช่องเวลารวม
+            document.getElementById('totalTime').value = timeString.trim();
+        }
+    }
     function submitForm() {
         if(padCustomer.isEmpty() || padChief.isEmpty()) {
             alert("ต้องให้ลูกค้าและหัวหน้าช่างเซ็นชื่อทั้งสองช่องนะเพื่อน!");
