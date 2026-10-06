@@ -466,17 +466,33 @@ function calculateTime() {
             alert("ต้องให้ลูกค้าและหัวหน้าช่างเซ็นชื่อทั้งสองช่องนะเพื่อน!");
             return;
         }
-        function generateShareLink() {
+       function generateShareLink() {
         const form = document.getElementById('repairForm');
         const formData = new FormData(form);
         const params = new URLSearchParams();
         
-        // กวาดข้อมูลที่กรอกทั้งหมดใส่ URL (ยกเว้นรูปกับลายเซ็น เพราะมันใหญ่เกินส่งผ่านลิงก์ไม่ได้)
+        // กวาดข้อมูลที่กรอกทั้งหมดใส่ URL (ยกเว้นรูปลูกค้ากับลายเซ็น)
         for (const [key, value] of formData.entries()) {
             if (value && key !== 'signature_customer' && key !== 'signature_chief' && !key.startsWith('pic_')) {
                 params.append(key, value);
             }
         }
+        
+        const shareUrl = window.location.origin + window.location.pathname + '?' + params.toString();
+        
+        // ลองสั่งก๊อปปี้อัตโนมัติก่อน ถ้ามือถือยอม
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(shareUrl).then(() => {
+                alert("🔗 ก๊อปลิงก์ให้แล้วเพื่อน! เอาไปแปะในแชท LINE ได้เลย\n\n(ถ้าก๊อปไม่ติด ลิงก์คือ:\n" + shareUrl + ")");
+            }).catch(err => {
+                // ถ้าก๊อปออโต้ไม่ผ่าน ให้เด้งกล่องให้ก๊อปเอง
+                prompt("มือถือบล็อกการก๊อปออโต้เพื่อน ให้ก๊อปลิงก์ในช่องข้างล่างนี้ไปแทนนะ:", shareUrl);
+            });
+        } else {
+            // โหมดไม้ตาย เด้งกล่องให้ก๊อปเอง (สำหรับเบราว์เซอร์ที่งอแง)
+            prompt("ก๊อปลิงก์ในช่องข้างล่างนี้ ไปส่งให้ช่างได้เลยเพื่อน:", shareUrl);
+        }
+    }
         
         const shareUrl = window.location.origin + window.location.pathname + '?' + params.toString();
         
