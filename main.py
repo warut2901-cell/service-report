@@ -46,7 +46,7 @@ def save():
         <table>
             <tr>
                 <td width="25%">
-                   <img src="ใส่ลิงก์โลโก้เดิมที่โค้ดนายมี" style="width: 250px; height: auto; display: block; margin: 0 auto;" alt="Logo">
+                   <img src="/static/logo.png" style="width: 250px; height: auto; display: block; margin: 0 auto;" alt="Logo">
                 </td>
                 <td width="50%">
                     <p class="header-text">ใบรายการซ่อมเครื่อง</p>
