@@ -350,8 +350,8 @@
                     </td>
                 </tr>
             </table>
-            
-            <button type="button" class="btn-submit" onclick="submitForm()">💾 บันทึกงานและสร้างใบ PDF</button>
+           <button type="button" class="btn-submit" onclick="generateShareLink()" style="background-color: #007bff; margin-bottom: 10px;">🔗 สร้างลิงก์ส่งให้ช่าง (แอดมินกด)</button>
+            <button type="button" class="btn-submit" onclick="submitForm()">💾 บันทึกงานและสร้างใบ PDF (ช่างกด)</button>
         </form>
     </div>
 
@@ -380,6 +380,19 @@
         loadCustomOptions('machineList', 'custom_machines');
         loadCustomOptions('brandList', 'custom_brands');
         loadCustomOptions('modelList', 'custom_models');
+          // โหลดข้อมูลจากลิงก์ (ถ้ามีคนส่งลิงก์มาให้)
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.forEach((value, key) => {
+        const input = document.querySelector(`[name="${key}"]`);
+        if (input) {
+            if (input.type === 'radio' || input.type === 'checkbox') {
+                const checkInput = document.querySelector(`[name="${key}"][value="${value}"]`);
+                if (checkInput) checkInput.checked = true;
+            } else {
+                input.value = value;
+            }
+        }
+    });
     };
 
     // ฟังก์ชันดึงความจำมาใส่ใน Dropdown
@@ -453,7 +466,27 @@ function calculateTime() {
             alert("ต้องให้ลูกค้าและหัวหน้าช่างเซ็นชื่อทั้งสองช่องนะเพื่อน!");
             return;
         }
+        function generateShareLink() {
+        const form = document.getElementById('repairForm');
+        const formData = new FormData(form);
+        const params = new URLSearchParams();
         
+        // กวาดข้อมูลที่กรอกทั้งหมดใส่ URL (ยกเว้นรูปกับลายเซ็น เพราะมันใหญ่เกินส่งผ่านลิงก์ไม่ได้)
+        for (const [key, value] of formData.entries()) {
+            if (value && key !== 'signature_customer' && key !== 'signature_chief' && !key.startsWith('pic_')) {
+                params.append(key, value);
+            }
+        }
+        
+        const shareUrl = window.location.origin + window.location.pathname + '?' + params.toString();
+        
+        // ก๊อปลิงก์ให้อัตโนมัติ
+        navigator.clipboard.writeText(shareUrl).then(() => {
+            alert("🔗 ก๊อปลิงก์ให้แล้วเพื่อน! เอาไปแปะในแชท LINE ส่งให้ช่างได้เลย");
+        }).catch(err => {
+            alert("ก๊อปไม่ได้เพื่อน ก๊อปลิงก์นี้ไปส่งเองนะ:\n" + shareUrl);
+        });
+    }
         // ให้จำตัวเลือกใหม่ลงเครื่องก่อนส่งข้อมูล
         saveCustomOptions();
 
