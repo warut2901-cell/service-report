@@ -53,7 +53,7 @@
 </head>
 <body>
     <div class="paper">
-        <form method="POST" action="/save" id="repairForm">
+        <form method="POST" action="/save" id="repairForm" enctype="multipart/form-data">
             <table>
                 <tr>
                     <td width="25%" style="text-align: center;">
@@ -287,9 +287,23 @@
                 </tr>
             </table>
 
-            <table>
-                <tr><td style="text-align: center; background-color: #f9f9f9;"><strong>รายละเอียดการให้บริการหรือซ่อม/ Description of Service or Repair</strong></td></tr>
-                <tr><td><textarea name="description" rows="8"></textarea></td></tr>
+           <table>
+                <tr><td colspan="2" style="text-align: center; background-color: #f9f9f9;"><strong>รายละเอียดการให้บริการหรือซ่อม/ Description of Service or Repair</strong></td></tr>
+                <tr>
+                    <td colspan="2">
+                        <textarea name="description" rows="5" placeholder="-- พิมพ์รายละเอียดงานซ่อม --"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="50%" style="text-align: center; padding-top: 15px; padding-bottom: 15px;">
+                        <strong>รูปก่อนซ่อม (Before)</strong><br>
+                        <input type="file" name="pic_before" accept="image/*" style="margin-top: 10px; font-size: 11px;">
+                    </td>
+                    <td width="50%" style="text-align: center; padding-top: 15px; padding-bottom: 15px;">
+                        <strong>รูปหลังซ่อม (After)</strong><br>
+                        <input type="file" name="pic_after" accept="image/*" style="margin-top: 10px; font-size: 11px;">
+                    </td>
+                </tr>
             </table>
 
             <table>
